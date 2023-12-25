@@ -1,8 +1,10 @@
 package controller;
 
 import bo.custom.CustomerBo;
+import bo.custom.ItemBo;
 import bo.custom.OrderBo;
 import bo.custom.impl.CustomerBoImpl;
+import bo.custom.impl.ItemBoImpl;
 import bo.custom.impl.OrderBoImpl;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
@@ -80,6 +82,8 @@ public class PlaceOrderFormController {
     private Label lblTotal;
 
     private CustomerBo customerBo = new CustomerBoImpl();
+
+    private ItemBo itemBo = new ItemBoImpl();
     private OrderBo orderBo= new OrderBoImpl();
     private ItemDao itemDao = new ItemDaoImpl();
     private List<CustomerDto> customers;
@@ -98,7 +102,7 @@ public class PlaceOrderFormController {
 
         try {
             customers = customerBo.allCustomers();
-            items = itemDao.allItems();
+            items = itemBo.allItems();
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }

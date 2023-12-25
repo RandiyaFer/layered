@@ -13,18 +13,18 @@ import java.util.List;
 @Entity
 public class Orders {
     @Id
-    private String orderId;
+    private String id;
     private String date;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customerId")
     private Customer customer;
 
     @OneToMany(mappedBy = "orders")
     private List<OrderDetail> orderDetails = new ArrayList<>();
 
-    public Orders(String orderId, String date) {
-        this.orderId = orderId;
+    public Orders(String id, String date) {
+        this.id = id;
         this.date = date;
     }
 

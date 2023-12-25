@@ -5,11 +5,11 @@ import lombok.*;
 
 public class ItemDto {
 
-    public ItemDto(String code, String description, double unitPrice, int qtyOnHand) {
+    public ItemDto(String code, String description, int qtyOnHand, double unitPrice) {
         this.code = code;
         this.description = description;
-        this.unitPrice = unitPrice;
         this.qtyOnHand = qtyOnHand;
+        this.unitPrice = unitPrice;
     }
 
     public ItemDto() {
@@ -38,11 +38,11 @@ public class ItemDto {
         this.unitPrice = unitPrice;
     }
 
-    public int getqtyOnHand() {
+    public int getQtyOnHand() {
         return qtyOnHand;
     }
 
-    public void setqtyOnHand(int qty) {
+    public void setQtyOnHand(int qty) {
         this.qtyOnHand = qtyOnHand;
     }
 

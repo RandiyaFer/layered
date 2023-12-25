@@ -11,7 +11,7 @@ public class ItemTm extends RecursiveTreeObject<ItemTm> {
     private int qtyOnHand;
     private JFXButton btn;
 
-    public ItemTm(String code, String description, double unitPrice, int qty, JFXButton btn) {
+    public ItemTm(String code, String description, double unitPrice, int qtyOnHand, JFXButton btn) {
         this.code = code;
         this.description = description;
         this.unitPrice = unitPrice;
@@ -46,11 +46,11 @@ public class ItemTm extends RecursiveTreeObject<ItemTm> {
         this.unitPrice = unitPrice;
     }
 
-    public int getqtyOnHand() {
+    public int getQtyOnHand() {
         return qtyOnHand;
     }
 
-    public void setQty(int qty) {
+    public void setQtyOnHand(int qty) {
         this.qtyOnHand = qty;
     }
 

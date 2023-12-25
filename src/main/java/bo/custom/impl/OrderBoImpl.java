@@ -22,7 +22,7 @@ public class OrderBoImpl implements OrderBo {
         try {
             Orders dto = orderDao.getLastOrder();
             if (dto!=null){
-                String id = dto.getOrderId();
+                String id = dto.getId();
                 int num = Integer.parseInt(id.split("[D]")[1]);
                 num++;
                 return String.format("D%03d",num);

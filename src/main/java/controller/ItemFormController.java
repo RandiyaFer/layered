@@ -8,6 +8,7 @@ import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import dao.util.BoType;
+import dto.CustomerDto;
 import dto.ItemDto;
 import dto.tm.ItemTm;
 import entity.Item;
@@ -16,12 +17,11 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -34,32 +34,48 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.function.Predicate;
 
+import static java.lang.Double.parseDouble;
+
 public class ItemFormController {
-    public BorderPane pane;
+    @FXML
+    private BorderPane pane;
+    @FXML
     public JFXTextField txtCode;
-    public JFXTextField txtDescription;
-    public JFXTextField txtUnitPrice;
-    public JFXTextField txtQty;
-    public JFXTextField txtSearch;
-    public JFXTreeTableView<ItemTm> tblItem;
-    public TreeTableColumn colCode;
-    public TreeTableColumn colDesc;
-    public TreeTableColumn colUnitPrice;
-    public TreeTableColumn colQty;
-    public TreeTableColumn colOption;
+    @FXML
+    private JFXTextField txtDescription;
+    @FXML
+    private JFXTextField txtUnitPrice;
+    @FXML
+    private JFXTextField txtQtyOnHand;
+    @FXML
+    private JFXTextField txtSearch;
+    @FXML
+    private TableView<ItemTm> tblItem;
+    @FXML
+    private TableColumn colCode;
+    @FXML
+    private TableColumn colDesc;
+    @FXML
+    private TableColumn colUnitPrice;
+    @FXML
+    private TableColumn colQtyOnHand;
+    @FXML
+    private TableColumn colOption;
 
     private ItemBo itemBo = BoFactory.getInstance().getBo(BoType.ITEM);
 
 
-    public void initialize() {
-        colCode.setCellValueFactory(new TreeItemPropertyValueFactory<>("code"));
-        colDesc.setCellValueFactory(new TreeItemPropertyValueFactory<>("description"));
-        colUnitPrice.setCellValueFactory(new TreeItemPropertyValueFactory<>("unitPrice"));
-        colQty.setCellValueFactory(new TreeItemPropertyValueFactory<>("qtyOnHand"));
-        colOption.setCellValueFactory(new TreeItemPropertyValueFactory<>("btn"));
+    public void initialize(){
+        colCode.setCellValueFactory(new PropertyValueFactory<>("item"));
+        colDesc.setCellValueFactory(new PropertyValueFactory<>("desc"));
+        colQtyOnHand.setCellValueFactory(new PropertyValueFactory<>("qty"));
+        colUnitPrice.setCellValueFactory(new PropertyValueFactory<>("uniPrize"));
+        colOption.setCellValueFactory(new PropertyValueFactory<>("btn"));
         loadItemTable();
 
-
+        tblItem.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+            setData(newValue);
+        });
     }
 
     private void loadItemTable() {
@@ -73,7 +89,7 @@ public class ItemFormController {
                         dto.getCode(),
                         dto.getDescription(),
                         dto.getUnitPrice(),
-                        dto.getqtyOnHand(),
+                        dto.getQtyOnHand(),
                         btn
                 );
 
@@ -82,9 +98,7 @@ public class ItemFormController {
                 });
                 tmList.add(tm);
             }
-            RecursiveTreeItem<ItemTm> treeItem = new RecursiveTreeItem<>(tmList, RecursiveTreeObject::getChildren);
-            tblItem.setRoot(treeItem);
-            tblItem.setShowRoot(false);
+            tblItem.setItems(tmList);
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -96,7 +110,7 @@ public class ItemFormController {
             txtCode.setText(newValue.getCode());
             txtDescription.setText(newValue.getDescription());
             txtUnitPrice.setText(String.valueOf(newValue.getUnitPrice()));
-            txtQty.setText(String.valueOf(newValue.getqtyOnHand()));
+            txtQtyOnHand.setText(String.valueOf(newValue.getQtyOnHand()));
         }
     }
     public void backButtonOnAction(ActionEvent actionEvent) {
@@ -113,8 +127,8 @@ public class ItemFormController {
     public void saveButtonOnAction(ActionEvent actionEvent) {
         ItemDto dto = new ItemDto(txtCode.getText(),
                 txtDescription.getText(),
-                Double.parseDouble(txtUnitPrice.getText()),
-                Integer.parseInt(txtQty.getText())
+                Integer.parseInt(txtQtyOnHand.getText()),
+                Double.parseDouble(txtUnitPrice.getText())
         );
 
         try {
@@ -135,17 +149,19 @@ public class ItemFormController {
     private void clearFields() {
         tblItem.refresh();
         txtUnitPrice.clear();
-        txtQty.clear();
+        txtQtyOnHand.clear();
         txtDescription.clear();
         txtCode.clear();
         txtCode.setEditable(true);
     }
 
+    @FXML
     public void updateButtonOnAction(ActionEvent actionEvent) {
-        ItemDto dto = new ItemDto(txtCode.getText(),
+        ItemDto dto = new ItemDto(
+                txtCode.getText(),
                 txtDescription.getText(),
-                Double.parseDouble(txtUnitPrice.getText()),
-                Integer.parseInt(txtQty.getText())
+                Integer.parseInt(txtQtyOnHand.getText()),
+                Double.parseDouble(txtUnitPrice.getText())
         );
 
         try {

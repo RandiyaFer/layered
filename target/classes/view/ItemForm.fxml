@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="491.0" prefWidth="678.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ItemFormController">
+<BorderPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="491.0" prefWidth="678.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ItemFormController">
    <center>
       <GridPane BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -48,20 +55,11 @@
                   <Label prefHeight="17.0" prefWidth="87.0" text="Description" GridPane.columnIndex="2" />
                   <JFXTextField fx:id="txtUnitPrice" maxWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
                   <Label prefHeight="17.0" prefWidth="87.0" text="Unit Price" GridPane.columnIndex="4" />
-                  <JFXTextField fx:id="txtQty" maxWidth="-Infinity" prefWidth="80.0" GridPane.columnIndex="6" GridPane.rowIndex="1" />
-                  <Label prefHeight="17.0" prefWidth="58.0" text="QTY" GridPane.columnIndex="6" />
+                  <JFXTextField fx:id="txtQtyOnHand" maxWidth="-Infinity" prefWidth="80.0" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                  <Label prefHeight="17.0" prefWidth="58.0" text="QTYOnHand" GridPane.columnIndex="6" />
                </children>
             </GridPane>
             <JFXTextField fx:id="txtSearch" maxWidth="-Infinity" prefWidth="200.0" promptText="Search" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <JFXTreeTableView fx:id="tblItem" GridPane.columnIndex="1" GridPane.rowIndex="5">
-               <columns>
-                  <TreeTableColumn fx:id="colCode" prefWidth="82.0" text="Item Code" />
-                  <TreeTableColumn fx:id="colDesc" prefWidth="166.0" text="Description" />
-                  <TreeTableColumn fx:id="colUnitPrice" prefWidth="139.0" text="Unit Price" />
-                  <TreeTableColumn fx:id="colQty" prefWidth="98.0" text="QTY" />
-                  <TreeTableColumn fx:id="colOption" prefWidth="123.0" text="Option" />
-               </columns>
-            </JFXTreeTableView>
             <JFXButton onAction="#saveButtonOnAction" prefHeight="25.0" prefWidth="59.0" style="-fx-background-color: royalblue;" text="Save" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="7">
                <font>
                   <Font name="System Bold" size="14.0" />
@@ -90,6 +88,15 @@
                      </ImageView>
                  </graphic>
              </JFXButton>
+            <TableView fx:id="tblItem" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+              <columns>
+                <TableColumn fx:id="colCode" prefWidth="103.0" text="ItemCode" />
+                <TableColumn fx:id="colDesc" prefWidth="152.0" text="Description" />
+                  <TableColumn fx:id="colQtyOnHand" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="105.0" text="QtyOnHand" />
+                  <TableColumn fx:id="colUnitPrice" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="142.0" text="UnitPrize" />
+                  <TableColumn fx:id="colOption" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="102.0" text="btn" />
+              </columns>
+            </TableView>
          </children>
       </GridPane>
    </center>

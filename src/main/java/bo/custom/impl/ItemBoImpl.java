@@ -21,7 +21,7 @@ public class ItemBoImpl implements ItemBo {
                 dto.getCode(),
                 dto.getDescription(),
                 dto.getUnitPrice(),
-                dto.getqtyOnHand()
+                dto.getQtyOnHand()
         ));
     }
     @Override
@@ -30,7 +30,7 @@ public class ItemBoImpl implements ItemBo {
                 dto.getCode(),
                 dto.getDescription(),
                 dto.getUnitPrice(),
-                dto.getqtyOnHand()
+                dto.getQtyOnHand()
         ));
     }
 
@@ -46,8 +46,8 @@ public class ItemBoImpl implements ItemBo {
             list.add(new ItemDto(
                     item.getCode(),
                     item.getDescription(),
-                    item.getUnitPrice(),
-                    item.getQtyOnHand()
+                    item.getQtyOnHand(),
+                    item.getUnitPrice()
             ));
         }
         return list;
