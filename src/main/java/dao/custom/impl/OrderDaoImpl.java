@@ -9,12 +9,14 @@ import dao.custom.OrderDao;
 import entity.*;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.query.Query;
+
 
 public class OrderDaoImpl implements OrderDao {
     private OrderDetailDao orderDetailDao = new OrderDetailDaoImpl();
@@ -48,10 +50,10 @@ public class OrderDaoImpl implements OrderDao {
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
         Orders order = new Orders(
-                dto.getOrderId(),
+                dto.getId(),
                 dto.getDate()
         );
-        order.setCustomer(session.find(Customer.class,dto.getCustId()));
+        order.setCustomer(session.find(Customer.class,dto.getCustomerId()));
         session.save(order);
 
         List<OrderDetailDto> list = dto.getList(); //dto type
@@ -84,14 +86,35 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List<OrderDto> getAll() throws SQLException, ClassNotFoundException {
-        return null;
+            Session session = HibernateUtil.getSession();
+            Query query = session.createQuery("FROM Orders ");
+            List<Orders> orderList = query.list();
+            List<OrderDto> list = new ArrayList<>();
+            for (Orders orders:orderList) {
+                list.add(new OrderDto(
+                        orders.getId(),
+                        orders.getDate().toString(),
+                        orders.getCustomer().getId(),
+                        null
+                ));
+            }
+            session.close();
+            return list;
     }
 
     @Override
-        public Orders getLastOrder() throws SQLException, ClassNotFoundException {
-            Session session = HibernateUtil.getSession();
-            Query query = session.createQuery("FROM Orders");
-            List<Customer> list = query.list();
+        public OrderDto getLastOrder() throws SQLException, ClassNotFoundException {
+        String sql = "SELECT * FROM orders ORDER BY id DESC LIMIT 1";
+        PreparedStatement pstm = DBConnection.getInstance().getConnection().prepareStatement(sql);
+        ResultSet resultSet = pstm.executeQuery();
+        if (resultSet.next()){
+            return new OrderDto(
+                    resultSet.getString(1),
+                    resultSet.getString(2),
+                    resultSet.getString(3),
+                    null
+            );
+        }
         return null;
     }
 

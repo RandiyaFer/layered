@@ -6,12 +6,30 @@ import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 @ToString
 public class OrderDto {
-    private String orderId;
+    @Getter
+    private String id;
+    @Getter
     private String date;
-    private String custId;
+    @Getter
+    private String customerId;
+    @Getter
     private List<OrderDetailDto> list;
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+
+    public void setList(List<OrderDetailDto> list) {
+        this.list = list;
+    }
 }

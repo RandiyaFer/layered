@@ -10,6 +10,7 @@ import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import dao.util.BoType;
 import dto.CustomerDto;
 import dto.ItemDto;
+import dto.tm.CustomerTm;
 import dto.tm.ItemTm;
 import entity.Item;
 import javafx.beans.value.ChangeListener;
@@ -22,7 +23,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import dao.custom.ItemDao;
@@ -40,15 +40,15 @@ public class ItemFormController {
     @FXML
     private BorderPane pane;
     @FXML
-    public JFXTextField txtCode;
+    private TextField txtCode;
     @FXML
-    private JFXTextField txtDescription;
+    private TextField txtDescription;
     @FXML
-    private JFXTextField txtUnitPrice;
+    private TextField txtUnitPrice;
     @FXML
-    private JFXTextField txtQtyOnHand;
+    private TextField txtQtyOnHand;
     @FXML
-    private JFXTextField txtSearch;
+    private TextField txtSearch;
     @FXML
     private TableView<ItemTm> tblItem;
     @FXML
@@ -58,7 +58,7 @@ public class ItemFormController {
     @FXML
     private TableColumn colUnitPrice;
     @FXML
-    private TableColumn colQtyOnHand;
+    private TableColumn colQty;
     @FXML
     private TableColumn colOption;
 
@@ -66,10 +66,10 @@ public class ItemFormController {
 
 
     public void initialize(){
-        colCode.setCellValueFactory(new PropertyValueFactory<>("item"));
-        colDesc.setCellValueFactory(new PropertyValueFactory<>("desc"));
-        colQtyOnHand.setCellValueFactory(new PropertyValueFactory<>("qty"));
-        colUnitPrice.setCellValueFactory(new PropertyValueFactory<>("uniPrize"));
+        colCode.setCellValueFactory(new PropertyValueFactory<>("code"));
+        colDesc.setCellValueFactory(new PropertyValueFactory<>("description"));
+        colQty.setCellValueFactory(new PropertyValueFactory<>("qtyOnHand"));
+        colUnitPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
         colOption.setCellValueFactory(new PropertyValueFactory<>("btn"));
         loadItemTable();
 
@@ -83,8 +83,7 @@ public class ItemFormController {
         try {
             List<ItemDto> dtoList  = itemBo.allItems();
             for (ItemDto dto:dtoList) {
-                JFXButton btn = new JFXButton("Delete");
-
+                Button btn = new Button("Delete");
                 ItemTm tm = new ItemTm(
                         dto.getCode(),
                         dto.getDescription(),
@@ -94,7 +93,7 @@ public class ItemFormController {
                 );
 
                 btn.setOnAction(actionEvent -> {
-                    //deleteItem(c.getCode());
+                    deleteItem(tm.getCode());
                 });
                 tmList.add(tm);
             }
@@ -125,7 +124,8 @@ public class ItemFormController {
     }
 
     public void saveButtonOnAction(ActionEvent actionEvent) {
-        ItemDto dto = new ItemDto(txtCode.getText(),
+        ItemDto dto = new ItemDto(
+                txtCode.getText(),
                 txtDescription.getText(),
                 Integer.parseInt(txtQtyOnHand.getText()),
                 Double.parseDouble(txtUnitPrice.getText())
@@ -135,7 +135,7 @@ public class ItemFormController {
             boolean isSaved = itemBo.saveItem(dto);
             if (isSaved){
                 new Alert(Alert.AlertType.INFORMATION,"Item Saved!").show();
-                loadItemTable();;
+                loadItemTable();
                 clearFields();
             }
 

@@ -12,7 +12,7 @@ import dto.CustomerDto;
 import dto.ItemDto;
 import dto.OrderDetailDto;
 import dto.OrderDto;
-import dto.tm.OrderTm;
+import dto.tm.PlaceOrderTm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -25,12 +25,6 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.stage.Stage;
-import dao.custom.CustomerDao;
-import dao.custom.ItemDao;
-import dao.custom.OrderDao;
-import dao.custom.impl.CustomerDaoImpl;
-import dao.custom.impl.ItemDaoImpl;
-import dao.custom.impl.OrderDaoImpl;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -61,7 +55,7 @@ public class PlaceOrderFormController {
     private JFXTextField txtQty;
 
     @FXML
-    private JFXTreeTableView<OrderTm> tblItem;
+    private JFXTreeTableView<PlaceOrderTm> tblItem;
 
     @FXML
     private TreeTableColumn<?, ?> colCode;
@@ -82,15 +76,13 @@ public class PlaceOrderFormController {
     private Label lblTotal;
 
     private CustomerBo customerBo = new CustomerBoImpl();
-
     private ItemBo itemBo = new ItemBoImpl();
     private OrderBo orderBo= new OrderBoImpl();
-    private ItemDao itemDao = new ItemDaoImpl();
     private List<CustomerDto> customers;
     private List<ItemDto> items;
     private double total=0;
 
-    private ObservableList<OrderTm> tmList = FXCollections.observableArrayList();
+    private ObservableList<PlaceOrderTm> tmList = FXCollections.observableArrayList();
 //    private OrderDao orderDao = new OrderDaoImpl();
 
     public void initialize(){
@@ -164,7 +156,7 @@ public class PlaceOrderFormController {
     void addToCartButtonOnAction(ActionEvent event) {
         JFXButton btn = new JFXButton("Delete");
 
-        OrderTm tm = new OrderTm(
+        PlaceOrderTm tm = new PlaceOrderTm(
                 cmbCode.getValue().toString(),
                 txtDesc.getText(),
                 Integer.parseInt(txtQty.getText()),
@@ -178,7 +170,7 @@ public class PlaceOrderFormController {
             tblItem.refresh();
         });
         boolean isExist = false;
-        for (OrderTm order:tmList) {
+        for (PlaceOrderTm order:tmList) {
             if (order.getCode().equals(tm.getCode())){
                 order.setQty(order.getQty()+tm.getQty());
                 order.setAmount(order.getAmount()+tm.getAmount());
@@ -213,7 +205,7 @@ public class PlaceOrderFormController {
     @FXML
     void placeOrderButtonOnAction(ActionEvent event) {
         List<OrderDetailDto> list = new ArrayList<>();
-        for (OrderTm tm:tmList) {
+        for (PlaceOrderTm tm:tmList) {
             list.add(new OrderDetailDto(
                     lblOrderId.getText(),
                     tm.getCode(),

@@ -51,7 +51,7 @@ public class ItemDaoImpl implements ItemDao {
 
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
-        session.delete(session.find(Customer.class, value));
+        session.delete(session.find(Item.class, value));
         transaction.commit();
         session.close();
         return true;

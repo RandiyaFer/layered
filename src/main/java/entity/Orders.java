@@ -27,10 +27,4 @@ public class Orders {
         this.id = id;
         this.date = date;
     }
-
-    public Orders(String date, Customer customer, List<OrderDetail> orderDetails) {
-        this.date = date;
-        this.customer = customer;
-        this.orderDetails = orderDetails;
-    }
 }
